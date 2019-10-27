@@ -3,6 +3,11 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+
+import PhoneIcon from '@material-ui/icons/PhoneIphone';
+import ComputerIcon from '@material-ui/icons/Computer';
+import CloudIcon from '@material-ui/icons/Cloud';
+
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
@@ -31,9 +36,9 @@ const useStyles = makeStyles(theme => ({
   },
   nameContainer: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  avatar: {
+  deviceIcon: {
     marginRight: theme.spacing(2)
   },
   actions: {
@@ -41,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UsersTable = props => {
+const DevicesTable = props => {
   const { className, users, ...rest } = props;
 
   const classes = useStyles();
@@ -103,22 +108,12 @@ const UsersTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedUsers.length === users.length}
-                      color="primary"
-                      indeterminate={
-                        selectedUsers.length > 0 &&
-                        selectedUsers.length < users.length
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Location</TableCell>
-                  <TableCell>Phone</TableCell>
-                  <TableCell>Registration date</TableCell>
+                  <TableCell>Connected</TableCell>
+                  <TableCell>Device</TableCell>
+                  <TableCell>Device ID</TableCell>
+                  <TableCell>Access Level</TableCell>
+                  <TableCell>Last Active</TableCell>
+                  <TableCell>VM Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -131,32 +126,26 @@ const UsersTable = props => {
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={selectedUsers.indexOf(user.id) !== -1}
+                        checked={user.connected}
                         color="primary"
-                        onChange={event => handleSelectOne(event, user.id)}
                         value="true"
+                        disabled                      
                       />
                     </TableCell>
                     <TableCell>
                       <div className={classes.nameContainer}>
-                        <Avatar
-                          className={classes.avatar}
-                          src={user.avatarUrl}
-                        >
-                          {getInitials(user.name)}
-                        </Avatar>
-                        <Typography variant="body1">{user.name}</Typography>
+                        <div className={classes.deviceIcon}>
+                          {user.type === 'phone' && <PhoneIcon/>}
+                          {user.type === 'computer' && <ComputerIcon/>}
+                          {user.type === 'cloud' && <CloudIcon/>}                          
+                        </div>
+                        {user.name}
                       </div>
                     </TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>
-                      {user.address.city}, {user.address.state},{' '}
-                      {user.address.country}
-                    </TableCell>
-                    <TableCell>{user.phone}</TableCell>
-                    <TableCell>
-                      {moment(user.createdAt).format('DD/MM/YYYY')}
-                    </TableCell>
+                    <TableCell>{user.id}</TableCell>
+                    <TableCell>{user.accessLevel}</TableCell>
+                    <TableCell>{moment(user.lastActive).format('MM/DD/YYYY')}</TableCell>
+                    <TableCell>{user.vmStatus ? "Active" : "Inative"}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -179,9 +168,9 @@ const UsersTable = props => {
   );
 };
 
-UsersTable.propTypes = {
+DevicesTable.propTypes = {
   className: PropTypes.string,
   users: PropTypes.array.isRequired
 };
 
-export default UsersTable;
+export default DevicesTable;
