@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UsersToolbar = props => {
+const DevicesToolbar = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -39,28 +39,25 @@ const UsersToolbar = props => {
       className={clsx(classes.root, className)}
     >
       <div className={classes.row}>
+        <SearchInput
+            className={classes.searchInput}
+            placeholder="Search user"
+          />
         <span className={classes.spacer} />
-        <Button className={classes.importButton}>Import</Button>
-        <Button className={classes.exportButton}>Export</Button>
+        <Button className={classes.exportButton}>Remove Device</Button>
         <Button
           color="primary"
           variant="contained"
         >
-          Add user
+          Add Device
         </Button>
-      </div>
-      <div className={classes.row}>
-        <SearchInput
-          className={classes.searchInput}
-          placeholder="Search user"
-        />
       </div>
     </div>
   );
 };
 
-UsersToolbar.propTypes = {
+DevicesToolbar.propTypes = {
   className: PropTypes.string
 };
 
-export default UsersToolbar;
+export default DevicesToolbar;
